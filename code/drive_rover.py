@@ -107,11 +107,12 @@ def telemetry(sid, data):
         Rover, image = update_rover(Rover, data)
 
         if np.isfinite(Rover.vel):
-
+            #print("Rover roll: {}".format(Rover.roll))
+            #print("Rover pitch: {}".format(Rover.pitch))
             # Execute the perception and decision steps to update the Rover's state
             Rover = perception_step(Rover)
             Rover = decision_step(Rover)
-
+            
             # Create output images to send to server
             out_image_string1, out_image_string2 = create_output_images(Rover)
 
