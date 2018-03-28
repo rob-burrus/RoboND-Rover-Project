@@ -96,7 +96,7 @@ def perception_step(Rover):
     navigable_thresh = color_thresh(image, (160,160,160))
     rock_thresh = color_thresh(image, (100,100,0), (255, 255, 20))
     
-    # 3) Define source and destination points for perspective transform
+    # 2) Define source and destination points for perspective transform
     
     # These source and destination points are defined to warp the image
     # to a grid where each 10x10 pixel square represents 1 square meter
@@ -139,6 +139,7 @@ def perception_step(Rover):
         Rover.worldmap[obstacle_y_world, obstacle_x_world, 0] += 10
         Rover.worldmap[navigable_y_world, navigable_x_world, 2] += 1
         Rover.worldmap[rock_y_world, rock_x_world, :] = 255
+
 
     # 8) Convert rover-centric pixel positions to polar coordinates
     navigable_dist, navigable_angles = to_polar_coords(navigable_x_rover, navigable_y_rover)
