@@ -17,10 +17,11 @@ threshed_rock = color_thresh(img, (100,100,0), (255, 255, 30))
 threshed_nav = color_thresh(img, (160,160,160))
 threshed_obs = color_thresh(img, (0,0,0), (160, 160, 160))
 ```
-![thresholds][./output/Thresholds.png]
+![thresholds](output/Thresholds.png)
 
 #### Process Images
-There are 7 steps to in the perception pipeline to process each image. Most steps use the functions derived in the lessons:
+There are 7 steps to in the perception pipeline to process each image. Most steps use the functions derived in the lessons. Importantly, the color thresholding comes before the perspective transform, otherwise the transform/threshold for the obstacle pixels will incorrectly identify pixels as being obstacles. This happens because the perspective transform results in an image with a 'V' shape, and the pixels outside of this 'V' should be ignored.
+
   1. Apply color thresholds to create binary image identifying pixels corresponding to navigable terrain, obstacles, and rocks
   ```
   obstacle_thresh = color_thresh(img, (0,0,0), (160,160,160))
@@ -67,8 +68,21 @@ There are 7 steps to in the perception pipeline to process each image. Most step
 
 ## Autonomous Navigation and Mapping
 
+#### perception_step()
+This funciton performs the same steps as the process_image step defined in the jupyter notebook above, with a few of modifications:
+  1. Use the Rover object instead of the DataBucket object
+  2. Rover.vision_image is updated to show navigable terrain, obstacles, and rocks in the output video
+  3. is_valid_rotation() is used to check if the Rover pitch and roll are near 0. If so, allow the worldmap to be updated, else, ignore this image as the persepctive transform can be off
+  4. Add "weight" to color channels of the worldmap when terrain, obstacles, and rocks are detected. This allows us to decide how to label the pixel based on multiple detections
+  5. Convert rover-centric navigable terrain pixel positions to polar coordinates. These are used in the decision step below
+
+#### decision_step()
+This function uses the polar coordinates derived in the previous step to make decisions about throttle, brake, and steer. The core idea driving the steering is using the average angle of the detected navigable terrain as the steering angle. This has the effect of the Rover driving into the "most open space" that it detects as being navigable. If the Rover drives into an area that doesn't meet our threshold for enough navigable terrain, it will stop and turn left (in place) until it finds navigable terrain, then accelerate again. 
 
 
+## Results and Improvements
+
+#### 
 
 
 
