@@ -77,12 +77,15 @@ This funciton performs the same steps as the process_image step defined in the j
   5. Convert rover-centric navigable terrain pixel positions to polar coordinates. These are used in the decision step below
 
 #### decision_step()
-This function uses the polar coordinates derived in the previous step to make decisions about throttle, brake, and steer. The core idea driving the steering is using the average angle of the detected navigable terrain as the steering angle. This has the effect of the Rover driving into the "most open space" that it detects as being navigable. If the Rover drives into an area that doesn't meet our threshold for enough navigable terrain, it will stop and turn left (in place) until it finds navigable terrain, then accelerate again. 
+This function uses the polar coordinates derived in the previous step to make decisions about throttle, brake, and steer. The core idea driving the steering is using the average angle of the detected navigable terrain as the steering angle. This has the effect of the Rover driving into the "most open space" that it detects as being navigable. If the Rover drives into an area that doesn't meet our threshold for enough navigable terrain, it will stop and turn right (in place) until it finds navigable terrain, then accelerate again. 
 
 
 ## Results and Improvements
 
-#### 
+With the simulator at 1024x768 screen resolution and "Good" graphics quality, the Rover is able to map >75% of the map at >65% fidelity. The biggest issue with covering more of the map is that the decision logic has no way to prefer areas that are unseen/unmapped over areas that we have already mapped. Thus, the Rover can get stuck in cycles of visiting the same place over and over again. It's only factor in determining what direction to go is the average angle of detected navigable space. This is a key area of potential improvement. Another improvement would be to drive to, and stop to pick up, rocks once we detect them. 
+
+
+
 
 
 
